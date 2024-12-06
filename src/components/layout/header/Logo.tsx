@@ -1,7 +1,3 @@
 export default function Logo() {
-  return (
-    <p className={`font-extrabold text-orange-400 w-[180px] text-body-1 mt-3 flex flex-row`}>
-      LOGODA
-    </p>
-  );
+  return <p className={`font-extrabold text-lime-600 mt-3 text-body-1`}>에코트랙</p>;
 }

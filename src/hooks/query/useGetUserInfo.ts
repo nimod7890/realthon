@@ -21,6 +21,7 @@ export default function useGetUserInfo() {
 
 export const userInfoQueryOptions = (token: string | null): UseQueryOptions<User> => ({
   queryKey: [QueryKeys.User, token],
-  queryFn: () => http.get(`/user?access_token=${token}`),
+  queryFn: () => http.be.get(`/users`) as Promise<User>,
+  // queryFn: () => Promise.resolve({ id: 1, name: "오드", totalExp: 113 }),
   enabled: Boolean(token),
 });

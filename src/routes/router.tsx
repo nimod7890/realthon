@@ -7,6 +7,8 @@ import GlobalFallback from "@components/layout/pending/GlobalFallback";
 import Layout from "@components/index";
 import NotFoundErrorPage from "@pages/error/NotFoundErrorPage";
 import root from "@routes/loader/root";
+import HomePage from "@pages/HomePage";
+import LoginPage from "@pages/LoginPage";
 
 const routes: RouteObject[] = [
   {
@@ -30,7 +32,7 @@ const routes: RouteObject[] = [
             index: true,
             element: (
               <Suspense fallback={<GlobalFallback />}>
-                <div>hi</div>
+                <HomePage />
               </Suspense>
             ),
           },
@@ -40,7 +42,7 @@ const routes: RouteObject[] = [
   },
   {
     path: RoutePath.Login,
-    element: <div>login</div>,
+    element: <LoginPage />,
   },
   {
     path: "*",

@@ -1,4 +1,4 @@
-import { BASE_URL } from "@constants/environments";
+import { AI_BASE_URL, BE_BASE_URL } from "@constants/environments";
 import STORAGE_KEYS from "@constants/storage";
 import getCookie from "@utils/storage/cookie/getCookie";
 import CustomError from "src/utils/api/error.ts";
@@ -15,7 +15,7 @@ export function generateDefaultHeaders(): HeadersInit {
   };
   const accessToken = getCookie<string>(STORAGE_KEYS.TOKEN);
   if (accessToken) {
-    headers.Authorization = accessToken;
+    headers.Authorization = `Bearer ${accessToken}`;
   }
   return headers;
 }
@@ -49,7 +49,10 @@ class FetchWrapper {
 
   async get<T>(url: string): Promise<T> {
     return this.request<T>(url, {
-      credentials: "include",
+      headers: {
+        credentials: "include",
+        ...generateDefaultHeaders(),
+      },
     });
   }
 
@@ -57,31 +60,26 @@ class FetchWrapper {
     return this.request<T>(url, {
       method: "PUT",
       body: JSON.stringify(data),
-      headers: {
-        ...generateDefaultHeaders(),
-      },
+      headers: { ...generateDefaultHeaders() },
       credentials: "include",
-    });
+    }) as T;
   }
 
   async post<T, U>(url: string, data?: U): Promise<T> {
     return this.request<T>(url, {
       method: "POST",
       body: data ? JSON.stringify(data) : null,
-      headers: {
-        ...generateDefaultHeaders(),
-      },
-      credentials: "include",
-    });
+      headers: { ...generateDefaultHeaders() },
+    }) as T;
   }
 
   async delete<T>(url: string): Promise<T> {
     return this.request<T>(url, {
       method: "DELETE",
-    });
+    }) as T;
   }
 }
 
-const http = new FetchWrapper(BASE_URL);
+const http = { ai: new FetchWrapper(AI_BASE_URL), be: new FetchWrapper(BE_BASE_URL) };
 
 export default http;
